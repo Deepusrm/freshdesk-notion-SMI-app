@@ -8,7 +8,7 @@
     },
     "support_ticket": {
       "location": {
-        "ticket_conversation_editor": {
+        "ticket_sidebar": {
           "url": "index.html",
           "icon": "styles/images/icon.svg"
         }
