@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Name</title>
+
+  <!-- Crayons CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/css/crayons-min.css">
+
+  <!-- Crayons JavaScript -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
+  <style>
+    fw-button{
+      margin-right: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <!-- Form for capturing user inputs -->
+    <fw-form>
+      <!-- Input field for note title -->
+      <fw-input type="text" label="Note Title" placeholder="Enter note title" required></fw-input>
+      
+      <!-- Input field for note content -->
+      <fw-input type="text" label="Note Content" placeholder="Enter note content" required></fw-input>
+      <br>
+      <!-- Buttons for create, update, and delete operations -->
+      <fw-button color="primary">Create Note</fw-button>
+      <fw-button color="secondary">Update Note</fw-button>
+      <fw-button color="danger">Delete Note</fw-button>
+    </fw-form>
+  </div>
+
+  <!-- Linking app.js file -->
+  <script src="app.js"></script>
+<script defer src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
+<script defer src="scripts/app.js"></script>
+</body>
+</html>

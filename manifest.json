@@ -1,0 +1,32 @@
+{
+  "platform-version": "3.0",
+  "modules": {
+    "common": {
+      "requests": {
+        "notion_api_request": {}
+      }
+    },
+    "support_ticket": {
+      "location": {
+        "ticket_conversation_editor": {
+          "url": "index.html",
+          "icon": "styles/images/icon.svg"
+        }
+      },
+      "events": {}
+    },
+    "service_ticket": {
+      "location": {
+        "ticket_sidebar": {
+          "url": "index.html",
+          "icon": "styles/images/icon.svg"
+        }
+      },
+      "events": {}
+    }
+  },
+  "engines": {
+    "node": "18.19.0",
+    "fdk": "9.1.0"
+  }
+}

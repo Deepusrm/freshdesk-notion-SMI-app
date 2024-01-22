@@ -1,0 +1,16 @@
+{
+  "notion_api_key": {
+    "description": "Enter your Notion API Key",
+    "type": "text",
+    "required": true,
+    "secure": true,
+    "display_name": "Notion API Key"
+  },
+  "notion_database_id": {
+    "description": "Enter the Notion Database ID where you want to store the notes",
+    "type": "text",
+    "required": true,
+    "secure": false,
+    "display_name": "Notion Database ID"
+  }
+}

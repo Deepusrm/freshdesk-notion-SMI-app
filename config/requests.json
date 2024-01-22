@@ -1,0 +1,15 @@
+{
+  "notion_api_request": {
+    "schema": {
+      "method": "POST",
+      "host": "api.notion.com",
+      "path": "/v1/pages",
+      "headers": {
+        "Authorization": "Bearer <%= iparam.notion_api_key %>",
+        "Content-Type": "application/json",
+        "Notion-version":"2022-06-28"
+      },
+      "query": {}
+    }
+  }
+}
