@@ -3,7 +3,17 @@
   "modules": {
     "common": {
       "requests": {
-        "notion_api_request": {}
+        "createPage": {},
+        "appendToExistingPage":{},
+        "getPageBlocks":{},
+        "getBlock":{},
+        "deleteBlock":{},
+        "updateBlock":{}
+      },
+      "functions":{
+        "createNote":{},
+        "updateNote":{},
+        "deleteNote":{}
       }
     },
     "support_ticket": {

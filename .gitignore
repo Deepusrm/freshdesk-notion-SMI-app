@@ -8,3 +8,4 @@ log/*
 dist
 .DS_Store
 .meta.json
+.freddy-copilot-error.log

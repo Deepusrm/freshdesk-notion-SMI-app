@@ -1,16 +1,17 @@
 {
-  "notion_api_key": {
-    "description": "Enter your Notion API Key",
+  "api_key": {
+    "display_name": "api_key",
+    "description": "Please enter your api_key",
     "type": "text",
     "required": true,
     "secure": true,
-    "display_name": "Notion API Key"
+    "modules":["support_ticket","service_ticket"]
   },
-  "notion_database_id": {
-    "description": "Enter the Notion Database ID where you want to store the notes",
-    "type": "text",
-    "required": true,
-    "secure": false,
-    "display_name": "Notion Database ID"
+  "notion_database":{
+    "display_name":"notion_database",
+    "description":"Please enter your notion_database_id",
+    "type":"text",
+    "required":true,
+    "modules":["support_ticket","service_ticket"]
   }
 }
