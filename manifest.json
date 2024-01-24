@@ -11,9 +11,9 @@
         "updateBlock":{}
       },
       "functions":{
-        "createNote":{},
-        "updateNote":{},
-        "deleteNote":{}
+        "createNote":{
+          "timeout":20
+        }
       }
     },
     "support_ticket": {

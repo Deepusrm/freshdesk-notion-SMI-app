@@ -1,4 +1,3 @@
-
 var client;
 
 init();
@@ -22,15 +21,21 @@ async function setupApp() {
   // viewButton.addEventListener('click',retrieveNote);
 }
 
-async function handleFormSubmit(event) {
+function handleFormSubmit(event) {
   event.preventDefault();
+  console.log('Function entered');
+  const noteTypeField = document.querySelector('#noteType');
   const noteTitleField = document.querySelector('#noteTitle');
   const noteContentField = document.querySelector('#noteContent');
 
+  const noteType = +noteTypeField.value;
+  console.log(noteType);
   const noteTitle = noteTitleField.value;
   const noteContent = noteContentField.value;
+  console.log(noteContent);
 
-  let args = {noteTitle,noteContent};
+
+  let args = {noteType,noteTitle,noteContent};
   if(event.target.id === 'createButton'){
     createNote(args);
   }else if(event.target.id === 'updateButton'){
@@ -42,15 +47,22 @@ async function handleFormSubmit(event) {
 }
 
 
-function createNote(args) {
+async function createNote(args) {
   // Call the corresponding server method invocation function with the necessary parameters for creating a note
   try{
-    console.log("args :"+args);
-    console.log("title : "+args.noteTitle);
-    console.log('content : '+args.noteContent);
-    client.request.invoke('createNote',{});
+    const ticketDetails = await client.data.get("ticket");
+    const id = ticketDetails.ticket["id"];
+    console.log(id);
+    let ticket = {
+      "PageId":"",
+      "Notes":{}
+    }
+    let params={...args,id,ticket};
+    client.db.set(`ticket-${id}`,{ticket},{setIf:"not_exist"});
+    await client.request.invoke('createNote',{data:params});
+    console.log("Note created successfully!");
   }catch(error){
-    console.error();
+    console.error(error);
   }
 }
 
