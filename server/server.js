@@ -13,8 +13,8 @@ exports = {
   // }
 
   createNote: async function(params) {
-    const parentBlock = await payloadUtils.parentBlock(id);
-    const [childBlock,noteId] = await payloadUtils.childBlock(params.noteTitle);
+    const parentBlock = await payloadUtils.parentBlock(params.data.id);
+    const [childBlock,noteId] = await payloadUtils.childBlock(params.data.noteTitle);
     const body = {...parentBlock,...childBlock};
 
     payloadUtils.appendBlock(body,params);
@@ -28,13 +28,31 @@ exports = {
     console.log(pageId);
     const blockIds = utils.returnBlockIds(results);
 
+    const ticket = params.data.ticket;
     console.log(ticket);
     ticket.PageId= pageId;
     ticket.Notes[noteId] = blockIds;
 
-    await $db.update(`ticket-${id}`,"set",{ ticket },{setIf:"exist"});
-    console.log("Note created successfully");
+    await $db.update(`ticket-${params.data.id}`,"set",{ticket},{setIf:"exist"});
+    console.log("Note created successfully and db updated successfully");
+  },
 
+  appendNote : async function(params){
+    const pageId = await $db.get(`ticket-${params.data.id}`);
+    const [childBlock,noteId] = await payloadUtils.childBlock(params.data.noteTitle);
+    
+    payloadUtils.appendBlock(childBlock,params);
+
+    const results = await $request.invokeTemplate("appendToExistingPage",{
+      context:{page_id:pageId["ticket"]["PageId"]},
+      body:JSON.stringify(childBlock)
+    })
+
+    const blockIds = utils.returnBlockIds(results);
+
+    let note = `ticket.Notes[${noteId}]`
+    await $db.update(`ticket-${params.data.id}`,"set",{[note]:blockIds},{setIf:"exist"});
+    console.log("Note added successfully and db updated successfully");
 
   },
 

@@ -110,4 +110,9 @@ exports.appendBlock = async function(body,args){
             })
         }
     }
+    body["children"].push({
+        object:"block",
+        type:"divider",
+        divider:{}
+    })
 }

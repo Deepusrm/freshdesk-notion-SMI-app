@@ -13,6 +13,9 @@
       "functions":{
         "createNote":{
           "timeout":20
+        },
+        "appendNote":{
+          "timeout":20
         }
       }
     },
