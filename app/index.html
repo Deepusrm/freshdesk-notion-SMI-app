@@ -29,8 +29,8 @@
         <fw-select-option value="1">TodoList</fw-select-option>
         <fw-select-option value="2">Notes</fw-select-option>
       </fw-select>
-      <fw-input id="noteTitle" label="Note Title"></fw-input>
-      <fw-textarea id="noteContent" label="Note Content"></fw-textarea>
+      <fw-input id="noteTitle" label="Note Title" required="true"></fw-input>
+      <fw-textarea id="noteContent" label="Note Content" required="true"></fw-textarea>
       <!-- Buttons for create, update, and delete operations -->
       
       <fw-button color="primary" id="createButton" type="submit">Create Note</fw-button><br>
@@ -38,6 +38,7 @@
       <fw-button color="danger" id="deleteButton" type="submit">Delete Note</fw-button><br>
     </fw-form>
   </div>
+  <!-- <a href="./deleteModal.html" -->
 
   <!-- Linking app.js file -->
 <script defer src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>

@@ -1,5 +1,4 @@
 var client;
-
 init();
 
 async function init() {
@@ -17,7 +16,13 @@ async function setupApp() {
   form.addEventListener('submit', handleFormSubmit);
   createButton.addEventListener('click', (e) => handleFormSubmit(e));
   updateButton.addEventListener('click', (e) => handleFormSubmit(e));
-  deleteButton.addEventListener('click', (e) => handleFormSubmit(e));
+  // deleteButton.addEventListener('click', (e) => handleFormSubmit(e));
+  deleteButton.addEventListener('click',()=>{
+    console.log("delete function entered");
+    client.interface.trigger('showModal',{
+      template:'./deleteModal.html'
+    });
+  })
   // viewButton.addEventListener('click',retrieveNote);
 }
 
