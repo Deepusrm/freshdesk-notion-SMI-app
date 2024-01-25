@@ -17,12 +17,17 @@ async function setupApp() {
   createButton.addEventListener('click', (e) => handleFormSubmit(e));
   updateButton.addEventListener('click', (e) => handleFormSubmit(e));
   // deleteButton.addEventListener('click', (e) => handleFormSubmit(e));
-  deleteButton.addEventListener('click',()=>{
+  deleteButton.addEventListener('click', async () => {
     console.log("delete function entered");
-    client.interface.trigger('showModal',{
-      template:'./deleteModal.html'
-    });
-  })
+    await client.interface.trigger('showModal', {
+      template: './deleteModal.html'
+    })
+    // document.addEventListener('DOMContentLoaded',()=>{
+    //   const deleteNoteButton = document.getElementById('delete');
+    //   console.log(deleteNoteButton);
+    //   deleteNoteButton.addEventListener('click', deleteNote);
+    // })
+  });
   // viewButton.addEventListener('click',retrieveNote);
 }
 
@@ -45,8 +50,6 @@ function handleFormSubmit(event) {
     createNote(args);
   } else if (event.target.id === 'updateButton') {
     updateNote(args);
-  } else if (event.target.id === 'deleteButton') {
-    deleteNote(args);
   }
 
 }
@@ -67,11 +70,10 @@ async function createNote(args) {
     await client.request.invoke('createNote', { data: params });
     console.log("Note created successfully!");
   } catch (error) {
-    console.error(error);
     if (error.message === "The setIf conditional request failed") {
       await client.request.invoke('appendNote', { data: params });
       console.log("Note added successfully!");
-    }else{
+    } else {
       console.error(error);
     }
   }
@@ -89,15 +91,21 @@ function updateNote(args) {
   }
 }
 
-function deleteNote(args) {
-  // Call the corresponding server method invocation function with the necessary parameters for deleting a note
-  try {
-    console.log("deleted args :" + args);
-    console.log("deleted title : " + args.noteTitle);
-    console.log('deleted content : ' + args.noteContent);
-    client.request.invoke('deleteNote', {});
-  } catch (error) {
-    console.error();
-  }
-}
+// async function deleteNote() {
+//   // Call the corresponding server method invocation function with the necessary parameters for deleting a note
+//   console.log(" function entered");
+//   try {
+//       const noteId = document.getElementById('noteId').value;
+//       const ticketDetails = await client.data.get("ticket");
+//       const id = ticketDetails.ticket["id"];
+//       const ticketId = `ticket-${id}`;
+
+//       let deleteParams = { noteId, ticketId };
+//       await client.request.invoke('deleteNote', { data: deleteParams });
+//       console.log("note deleted successfully!");
+
+//   } catch (error) {
+//       console.error(error);
+//   }
+// }
 

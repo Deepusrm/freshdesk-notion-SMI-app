@@ -21,12 +21,14 @@
 <body>
   <div class="fw-type-h3">Delete note</div>
   <br>
-  <fw-input type="text" label="Note ID" placeholder="Enter Note ID" required></fw-input>
+  <fw-input type="text" label="Note ID" placeholder="Enter Note ID" id="noteId" required></fw-input>
   <br>
   <fw-button-group>
     <fw-button color="primary" id="delete">Delete</fw-button>
-    <fw-button color="secondary" id="cancelButton">Cancel</fw-button>
   </fw-button-group>
 </body>
+<script defer src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
+<script defer src="./scripts/deleteNoteModal.js"></script>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/css/crayons-min.css" />
 </html>
