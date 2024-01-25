@@ -13,11 +13,12 @@ exports = {
   // }
 
   createNote: async function (params) {
-    const parentBlock = await payloadUtils.parentBlock(params.data.id);
-    const [childBlock, noteId] = await payloadUtils.childBlock(params.data.noteTitle);
+    const parentBlock = payloadUtils.parentBlock(params.data.id);
+    const [childBlock, noteId] = payloadUtils.childBlock(params.data.noteTitle);
     const body = { ...parentBlock, ...childBlock };
 
     payloadUtils.appendBlock(body, params);
+
 
     const pageId = await utils.returnPageIdOnCreatingNote(body);
     console.log("note created successfully");
@@ -43,40 +44,32 @@ exports = {
 
     payloadUtils.appendBlock(childBlock, params);
 
-    const results = await $request.invokeTemplate("appendToExistingPage", {
-      context: { page_id: pageId["ticket"]["PageId"] },
-      body: JSON.stringify(childBlock)
-    })
+    try {
+      const results = await $request.invokeTemplate("appendToExistingPage", {
+        context: { page_id: pageId["ticket"]["PageId"] },
+        body: JSON.stringify(childBlock)
+      })
+      const blockIds = utils.returnBlockIds(results);
 
-    const blockIds = utils.returnBlockIds(results);
+      let note = `ticket.Notes[${noteId}]`
+      await $db.update(`ticket-${params.data.id}`, "set", { [note]: blockIds }, { setIf: "exist" });
+      console.log("Note added successfully and db updated successfully");
+    } catch (error) {
+      console.error(error);
+    }
 
-    let note = `ticket.Notes[${noteId}]`
-    await $db.update(`ticket-${params.data.id}`, "set", { [note]: blockIds }, { setIf: "exist" });
-    console.log("Note added successfully and db updated successfully");
+
+
 
   },
 
   updateNote: async function () {
     console.log("updated");
   },
-
-  deleteNote: async function (args) {
-    console.log("server side delete function entered");
-    const ticketDetails = await $db.get(args.data.ticketId);
-    const noteBlocks = ticketDetails["Notes"][args.data.noteId];
-
-    for(const blockId of noteBlocks){
-      await $request.invokeTemplate('deleteBlock',{
-        context:{block_id:blockId}
-      });
-    }
-
-    const note = 'ticket.Notes.'+args.data.noteId;
-    $db.update(args.data.ticketId,"remove",[note],{setIf:"exist"});
-    console.log("note removed successfully in db");
+  deleteNote: async function () {
+    console.log("deleted!!");
   }
 
 }
-
 
 

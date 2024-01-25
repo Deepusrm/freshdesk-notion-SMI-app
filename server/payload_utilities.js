@@ -1,5 +1,5 @@
 const utils = require('./utilities');
-exports.parentBlock = async function (id){
+exports.parentBlock = function (id){
     const parentJSON = {
         parent: {
             type: "database_id",
@@ -20,7 +20,7 @@ exports.parentBlock = async function (id){
     return parentJSON;
 }
 
-exports.childBlock = async function(title){
+exports.childBlock = function(title){
     let noteId = utils.generateNoteId();
 
     const childJSON = {
@@ -54,7 +54,7 @@ exports.childBlock = async function(title){
     return [childJSON,noteId]
 }
 
-exports.appendBlock = async function(body,args){
+exports.appendBlock = function(body,args){
     const noteData = args.data;
     console.log("content "+JSON.stringify(noteData.noteContent));
     if(noteData.noteType === 1){
