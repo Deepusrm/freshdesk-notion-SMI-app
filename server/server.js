@@ -40,7 +40,7 @@ exports = {
 
   appendNote: async function (params) {
     const pageId = await $db.get(`ticket-${params.data.id}`);
-    const [childBlock, noteId] = await payloadUtils.childBlock(params.data.noteTitle);
+    const [childBlock, noteId] = payloadUtils.childBlock(params.data.noteTitle);
 
     payloadUtils.appendBlock(childBlock, params);
 
@@ -57,9 +57,6 @@ exports = {
     } catch (error) {
       console.error(error);
     }
-
-
-
 
   },
 
