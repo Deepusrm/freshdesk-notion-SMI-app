@@ -63,8 +63,28 @@ exports = {
   updateNote: async function () {
     console.log("updated");
   },
-  deleteNote: async function () {
+  deleteNote: async function (id) {
+    console.log(id.ticket_id);
+    console.log(id.note_id);
     console.log("deleted!!");
+    const ticket = await $db.get(id.ticket_id);
+    const noteBlocks = ticket.ticket["Notes"][id.note_id];
+    console.log(noteBlocks);
+
+    try{
+      for(const block of noteBlocks){
+        await $request.invokeTemplate('deleteBlock',{
+          context:{block_id:block}
+        })
+      }
+
+      console.log("Note deleted successfully");
+      const notePath = "ticket.Notes."+id.note_id;
+      await $db.update(id.ticket_id,"remove",[notePath],{setIf:"exist"});
+      console.log("Note removed successfully from the db");
+    }catch(error){
+      console.error(error);
+    }
   }
 
 }

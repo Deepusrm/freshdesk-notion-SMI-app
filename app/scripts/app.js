@@ -17,9 +17,17 @@ async function setupApp() {
   form.addEventListener('submit', handleFormSubmit);
   createButton.addEventListener('click', (e) => handleFormSubmit(e));
   updateButton.addEventListener('click', (e) => handleFormSubmit(e));
-  deleteButton.addEventListener('click', (e) => handleFormSubmit(e));
+  // deleteButton.addEventListener('click', (e) => handleFormSubmit(e));
+  deleteButton.addEventListener('click', () => {
+    console.log("delete button pressed");
+    client.interface.trigger('showModal', {
+      template: './deleteNoteModal.html'
+    })
+  })
   // viewButton.addEventListener('click',retrieveNote);
 }
+
+
 
 function handleFormSubmit(event) {
   event.preventDefault();
@@ -40,8 +48,6 @@ function handleFormSubmit(event) {
     createNote(args);
   } else if (event.target.id === 'updateButton') {
     updateNote(args);
-  } else if (event.target.id === 'deleteButton') {
-    deleteNote(args);
   }
 
 }
@@ -66,7 +72,7 @@ async function createNote(args) {
     if (error.message === "The setIf conditional request failed") {
       await client.request.invoke('appendNote', { data: params });
       console.log("Note added successfully!");
-    }else{
+    } else {
       console.error(error);
     }
   }
@@ -84,14 +90,3 @@ function updateNote(args) {
   }
 }
 
-function deleteNote(args) {
-  // Call the corresponding server method invocation function with the necessary parameters for deleting a note
-  try {
-    console.log("deleted args :" + args);
-    console.log("deleted title : " + args.noteTitle);
-    console.log('deleted content : ' + args.noteContent);
-    client.request.invoke('deleteNote', {});
-  } catch (error) {
-    console.error();
-  }
-}
