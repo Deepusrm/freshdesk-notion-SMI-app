@@ -1,17 +1,6 @@
 const payloadUtils = require('./payload_utilities');
 const utils = require('./utilities');
 exports = {
-  // getNote : async function (args) {
-  //   try{
-  //     const response = await $request.invokeTemplate("getPageBlocks", {
-  //       context: { page_id: args.id }
-  //     });
-  //     console.log(JSON.parse(response.response));
-  //   }catch(error){
-  //     console.error(error);
-  //   }
-  // }
-
   createNote: async function (params) {
     const parentBlock = payloadUtils.parentBlock(params.data.id);
     const [childBlock, noteId] = payloadUtils.childBlock(params.data.noteTitle);
@@ -37,7 +26,7 @@ exports = {
     await $db.update(`ticket-${params.data.id}`, "set", { ticket }, { setIf: "exist" });
     console.log("Note created successfully and db updated successfully");
   },
-
+  
   appendNote: async function (params) {
     const pageId = await $db.get(`ticket-${params.data.id}`);
     const [childBlock, noteId] = payloadUtils.childBlock(params.data.noteTitle);
@@ -60,9 +49,6 @@ exports = {
 
   },
 
-  updateNote: async function () {
-    console.log("updated");
-  },
   deleteNote: async function (id) {
     console.log(id.ticket_id);
     console.log(id.note_id);
@@ -85,6 +71,18 @@ exports = {
     }catch(error){
       console.error(error);
     }
+  },
+
+  getAllNotes: async function(id){
+    const ticket = await $db.get(id.ticket_id);
+    const pageId = ticket.ticket["PageId"];
+
+    const response = await $request.invokeTemplate('getPageBlocks',{
+      context:{page_id:pageId}
+    });
+    
+    const results = JSON.parse(response.response);
+    return results["results"];
   }
 
 }

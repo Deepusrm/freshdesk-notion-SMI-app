@@ -10,21 +10,27 @@ async function init() {
 async function setupApp() {
   const form = document.querySelector('fw-form');
   const createButton = document.getElementById('createButton');
-  const updateButton = document.getElementById('updateButton');
+  const editButton = document.getElementById('editButton');
   const deleteButton = document.getElementById('deleteButton');
-  // const viewButton = document.getElementById('viewButton');
+  const viewButton = document.getElementById('viewButton');
 
   form.addEventListener('submit', handleFormSubmit);
   createButton.addEventListener('click', (e) => handleFormSubmit(e));
-  updateButton.addEventListener('click', (e) => handleFormSubmit(e));
+  editButton.addEventListener('click', (e) => handleFormSubmit(e));
   // deleteButton.addEventListener('click', (e) => handleFormSubmit(e));
   deleteButton.addEventListener('click', () => {
     console.log("delete button pressed");
     client.interface.trigger('showModal', {
       template: './deleteNoteModal.html'
     })
-  })
-  // viewButton.addEventListener('click',retrieveNote);
+  });
+  
+  viewButton.addEventListener('click',()=>{
+    console.log("view button pressed");
+    client.interface.trigger('showModal',{
+      template:'./viewNoteModal.html'
+    })
+  });
 }
 
 
@@ -46,7 +52,8 @@ function handleFormSubmit(event) {
   let args = { noteType, noteTitle, noteContent };
   if (event.target.id === 'createButton') {
     createNote(args);
-  } else if (event.target.id === 'updateButton') {
+
+  } else if (event.target.id === 'editButton') {
     updateNote(args);
   }
 
@@ -66,6 +73,7 @@ async function createNote(args) {
   try {
     await client.db.set(`ticket-${id}`, { ticket }, { setIf: "not_exist" });
     await client.request.invoke('createNote', { data: params });
+    document.querySelector('fw-form').reset();
     console.log("Note created successfully!");
   } catch (error) {
     console.error(error);

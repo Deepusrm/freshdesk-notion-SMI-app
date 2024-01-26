@@ -1,5 +1,5 @@
 const utils = require('./utilities');
-exports.parentBlock = function (id){
+exports.parentBlock = function (id) {
     const parentJSON = {
         parent: {
             type: "database_id",
@@ -20,44 +20,44 @@ exports.parentBlock = function (id){
     return parentJSON;
 }
 
-exports.childBlock = function(title){
+exports.childBlock = function (title) {
     let noteId = utils.generateNoteId();
 
     const childJSON = {
-        children:[{
-            object:"block",
-            type:"paragraph",
-            paragraph:{
-                rich_text:[{
-                    text:{
-                        content:`note id :${noteId}`
+        children: [{
+            object: "block",
+            type: "paragraph",
+            paragraph: {
+                rich_text: [{
+                    text: {
+                        content: `note id :${noteId}`
                     },
-                    annotations:{
-                        color:"gray"
+                    annotations: {
+                        color: "gray"
                     }
                 }]
             }
         },
         {
-            object:"block",
-            type:"heading_3",
-            heading_3:{
-                rich_text:[{
-                    text:{
-                        content:title
+            object: "block",
+            type: "heading_3",
+            heading_3: {
+                rich_text: [{
+                    text: {
+                        content: title
                     }
                 }]
             }
         }]
     }
 
-    return [childJSON,noteId]
+    return [childJSON, noteId]
 }
 
-exports.appendBlock = function(body,args){
+exports.appendBlock = function (body, args) {
     const noteData = args.data;
-    console.log("content "+JSON.stringify(noteData.noteContent));
-    if(noteData.noteType === 1){
+    console.log("content " + JSON.stringify(noteData.noteContent));
+    if (noteData.noteType === 1) {
         const array = noteData.noteContent.split("\n");
         array.forEach(element => {
             body["children"].push({
@@ -74,11 +74,11 @@ exports.appendBlock = function(body,args){
                     ],
                     checked: false,
                     color: "default"
-                } 
+                }
             })
         });
-    }else if(noteData.noteType === 2){
-        if(noteData.noteContent.includes("\n")){
+    } else if (noteData.noteType === 2) {
+        if (noteData.noteContent.includes("\n")) {
             const array = noteData.noteContent.split("\n");
             array.forEach(element => {
                 body["children"].push({
@@ -93,17 +93,17 @@ exports.appendBlock = function(body,args){
                                 }
                             }
                         ]
-                    } 
+                    }
                 })
             });
-        }else{
+        } else {
             body["children"].push({
-                object:"block",
-                type:"paragraph",
-                paragraph:{
-                    rich_text:[{
-                        text:{
-                            content:noteData.noteContent
+                object: "block",
+                type: "paragraph",
+                paragraph: {
+                    rich_text: [{
+                        text: {
+                            content: noteData.noteContent
                         }
                     }]
                 }
@@ -111,8 +111,8 @@ exports.appendBlock = function(body,args){
         }
     }
     body["children"].push({
-        object:"block",
-        type:"divider",
-        divider:{}
+        object: "block",
+        type: "divider",
+        divider: {}
     })
 }

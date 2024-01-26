@@ -17,6 +17,7 @@ async function deleteNote() {
     const noteId = document.getElementById('noteId').value;
     console.log(noteId);
 
-    await client.request.invoke('deleteNote',{ticket_id:`ticket-${ticket.ticket.id}`,note_id:noteId});
+    await client.request.invoke('deleteNote',{ticket_id:`${ticket.ticket.id}`,note_id:noteId});
+    console.log("Note deleted successfully");
 
 }

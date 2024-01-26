@@ -19,6 +19,9 @@
         },
         "deleteNote":{
           "timeout":20
+        },
+        "getAllNotes":{
+          "timeout":20
         }
       }
     },
