@@ -8,3 +8,10 @@ const returnTicketId = function returnTicketId(string) {
     console.log(`ticket-${ticketId}`);
     return `ticket-${ticketId}`;
 }
+
+async function showNotifications(message,type){
+    await client.interface.trigger('showNotify',{
+        type:type,
+        message:message
+    })
+}
