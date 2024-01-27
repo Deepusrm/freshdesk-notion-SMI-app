@@ -26,7 +26,7 @@ exports = {
     await $db.update(`ticket-${params.data.id}`, "set", { ticket }, { setIf: "exist" });
     console.log("Note created successfully and db updated successfully");
   },
-  
+
   appendNote: async function (params) {
     const pageId = await $db.get(`ticket-${params.data.id}`);
     const [childBlock, noteId] = payloadUtils.childBlock(params.data.noteTitle);
@@ -52,35 +52,35 @@ exports = {
   deleteNote: async function (id) {
     console.log(id.ticket_id);
     console.log(id.note_id);
-    console.log("deleted!!");
-    const ticket = await $db.get(id.ticket_id);
-    const noteBlocks = ticket.ticket["Notes"][id.note_id];
-    console.log(noteBlocks);
 
-    try{
-      for(const block of noteBlocks){
-        await $request.invokeTemplate('deleteBlock',{
-          context:{block_id:block}
+    try {
+      const ticket = await $db.get(`ticket-${id.ticket_id}`);
+      const noteId = id.note_id;
+      console.log(noteId);
+      const noteBlocks = ticket.ticket["Notes"][noteId];
+      console.log(noteBlocks);
+      for (const block of noteBlocks) {
+        await $request.invokeTemplate('deleteBlock', {
+          context: { block_id: block }
         })
       }
-
       console.log("Note deleted successfully");
-      const notePath = "ticket.Notes."+id.note_id;
-      await $db.update(id.ticket_id,"remove",[notePath],{setIf:"exist"});
+      const notePath = "ticket.Notes." + id.note_id;
+      await $db.update(`ticket-${id.ticket_id}`, "remove", [notePath], { setIf: "exist" });
       console.log("Note removed successfully from the db");
-    }catch(error){
+    } catch (error) {
       console.error(error);
     }
   },
 
-  getAllNotes: async function(id){
+  getAllNotes: async function (id) {
     const ticket = await $db.get(id.ticket_id);
     const pageId = ticket.ticket["PageId"];
 
-    const response = await $request.invokeTemplate('getPageBlocks',{
-      context:{page_id:pageId}
+    const response = await $request.invokeTemplate('getPageBlocks', {
+      context: { page_id: pageId }
     });
-    
+
     const results = JSON.parse(response.response);
     return results["results"];
   }

@@ -18,6 +18,10 @@ async function deleteNote() {
     console.log(noteId);
 
     await client.request.invoke('deleteNote',{ticket_id:`${ticket.ticket.id}`,note_id:noteId});
+    await client.interface.trigger('showNotify',{
+        type:"success",
+        message:"Note deleted successfully"
+      });
     console.log("Note deleted successfully");
 
 }

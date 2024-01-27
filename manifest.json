@@ -44,6 +44,8 @@
       "events": {}
     }
   },
+  "name":"Notion",
+  "description":"An app to take notes related to the ticket",
   "engines": {
     "node": "18.19.0",
     "fdk": "9.1.0"

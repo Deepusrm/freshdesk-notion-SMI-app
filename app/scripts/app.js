@@ -74,14 +74,26 @@ async function createNote(args) {
     await client.db.set(`ticket-${id}`, { ticket }, { setIf: "not_exist" });
     await client.request.invoke('createNote', { data: params });
     document.querySelector('fw-form').reset();
+    await client.interface.trigger('showNotify',{
+      type:"success",
+      message:"Note created successfully"
+    });
     console.log("Note created successfully!");
   } catch (error) {
     console.error(error);
     if (error.message === "The setIf conditional request failed") {
       await client.request.invoke('appendNote', { data: params });
+      await client.interface.trigger('showNotify',{
+        type:"success",
+        message:"Note created successfully"
+      });
       console.log("Note added successfully!");
     } else {
       console.error(error);
+      await client.interface.trigger('showNotify',{
+        type:"danger",
+        message:"Failed to add note"
+      })
     }
   }
 }
