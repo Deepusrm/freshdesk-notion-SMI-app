@@ -40,7 +40,7 @@ function resetForm(){
 
 function showToast(message,type){
     const toast = document.getElementById('modalToast');
-    toast.message = message;
+    toast.content = message;
     toast.type = type;
     toast.trigger();
 }
