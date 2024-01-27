@@ -10,18 +10,38 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function deleteNote() {
+    document.getElementById('deleteModalLoader').style.display = "block";
     try {
         const client = await app.initialized();
         const ticket = await client.data.get("ticket");
         const noteId = document.getElementById('noteId').value;
-        await client.request.invoke('deleteNote', { ticket_id: `${ticket.ticket.id}`, note_id: noteId });
-        await showNotifications('Note deleted successfully', 'success');
-        console.log("Note deleted successfully");
+        try {
+            await client.request.invoke('deleteNote', { ticket_id: `${ticket.ticket.id}`, note_id: noteId });    
+        } catch (error) {
+            console.error(error);
+        }
+        try {
+            document.getElementById('deleteModalLoader').style.display = "none";
+            showToast('Note deleted successfully',"success");
+            console.log("Note deleted successfully");
+        } catch (error) {
+           console.error(error);
+        }
     }catch(error){
         if(error.message === 'Timeout error while processing the request.'){
-            await showNotifications('Note deleted successfully','success');
+            try {
+                document.getElementById('deleteModalLoader').style.display = "none";
+                // await showNotifications('Note deleted successfully','success');
+                showToast('Note deleted successfully',"success");
+                console.log('Note deleted successfully');
+            } catch (error) {
+                console.error(error);
+            }
+            console.log('Note deleted successfully');
         }else{
-            await showNotifications(error.message,'danger');
+            showToast('Proccess failed',"error");
+            console.log('Process failed');
+            // await showNotifications(error.message,'danger');
         }
     }
 }

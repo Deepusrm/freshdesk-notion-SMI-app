@@ -9,6 +9,7 @@
 
     <!-- Crayons CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/css/crayons-min.css">
+    <link rel="stylesheet" href="./styles/css/loader.css">
 
     <!-- Crayons JavaScript -->
     <script type="module" src="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
@@ -24,8 +25,9 @@
     <fw-input id="noteId" label="Note id" placeholder="Enter the note id" required></fw-input>
     <br>
     <fw-button id="deleteNote">Delete</fw-button>
+    <div id="deleteModalLoader" class="loader"></div>
     <script defer src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
-    <script src="./scripts/utilities.js"></script>
-    <script src="./scripts/deleteNoteModal.js"></script>
+    <script defer src="./scripts/utilities.js"></script>
+    <script defer src="./scripts/deleteNoteModal.js"></script>
 </body>
 </html>

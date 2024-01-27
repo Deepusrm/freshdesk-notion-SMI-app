@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,18 +9,20 @@
 
   <!-- Crayons CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/css/crayons-min.css">
+  <link rel="stylesheet" href="./styles/css/loader.css">
 
   <!-- Crayons JavaScript -->
   <script type="module" src="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
   <script nomodule src="https://cdn.jsdelivr.net/npm/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
   <style>
-    fw-button{
+    fw-button {
       margin-right: 50px;
       margin-bottom: 5px;
       width: 100%;
     }
   </style>
 </head>
+
 <body>
   <div id="app-container">
     <!-- Form for capturing user inputs -->
@@ -32,17 +34,20 @@
       <fw-input id="noteTitle" label="Note Title" required></fw-input>
       <fw-textarea id="noteContent" label="Note Content" required></fw-textarea>
       <!-- Buttons for create, update, and delete operations -->
-      
+
       <fw-button color="primary" id="createButton" type="submit">Create Note</fw-button><br>
       <fw-button color="secondary" id="editButton" type="submit">Edit Note</fw-button><br>
-      <fw-button color="danger" id="deleteButton" >Delete Note</fw-button><br>
+      <fw-button color="danger" id="deleteButton">Delete Note</fw-button><br>
       <fw-button color="secondary" id="viewButton">View Note</fw-button>
     </fw-form>
+    <div id="loader" class="loader"></div>
+    <fw-toast id="modalToast" position="center"></fw-toast>
   </div>
 
   <!-- Linking app.js file -->
-<script defer src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
-<script defer src="scripts/utilities.js"></script>
-<script defer src="scripts/app.js"></script>
+  <script defer src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
+  <script defer src="scripts/utilities.js"></script>
+  <script defer src="scripts/app.js"></script>
 </body>
+
 </html>

@@ -33,8 +33,6 @@ async function setupApp() {
   });
 }
 
-
-
 function handleFormSubmit(event) {
   event.preventDefault();
   console.log('Function entered');
@@ -59,9 +57,9 @@ function handleFormSubmit(event) {
 
 }
 
-
 async function createNote(args) {
   // Call the corresponding server method invocation function with the necessary parameters for creating a note
+  document.getElementById('loader').style.display = "block"
   const ticketDetails = await client.data.get("ticket");
   const id = ticketDetails.ticket["id"];
   console.log(id);
@@ -71,33 +69,57 @@ async function createNote(args) {
   }
   let params = { ...args, id, ticket };
   try {
-    await client.db.set(`ticket-${id}`, { ticket }, { setIf: "not_exist" });
-    await client.request.invoke('createNote', { data: params });
-    document.querySelector('fw-form').reset();
-    await showNotifications('Note created successfully','success');
+      await client.db.set(`ticket-${id}`, { ticket }, { setIf: "not_exist" });
+      try{
+        await client.request.invoke('createNote', { data: params });
+        
+      }catch(error){
+        console.error(error);
+      }
+      try{
+        document.getElementById('loader').style.display = "none"
+        resetForm();
+        await showNotifications('Note created successfully','success');
+      }catch(error){
+        console.error(error);
+      }
   } catch (error) {
-    console.error(error);
     if (error.message === "The setIf conditional request failed") {
-      await client.request.invoke('appendNote', { data: params });
-      await showNotifications('Note added successfully','success');
+      try{
+        await client.request.invoke('appendNote', { data: params });
+        console.log('Note added successfully');
+      }catch(error){
+        console.error(error);
+      }
+      
+      try{
+        document.getElementById('loader').style.display = "none";
+        resetForm();
+        await showNotifications('Note added successfully','success');
+        console.log('Notifications shown - 1');
+      }catch(error){
+        console.error(error);
+      }
+      
     }else if(error.message === 'Timeout error while processing the request.'){
-      await showNotifications('Note created successfully','success');
+      try{
+        document.getElementById('loader').style.display = "none";
+        resetForm();
+        await showNotifications('Note created successfully','success');
+        console.log('Notifications shown - 2');
+      }catch(error){
+        console.error(error);
+      }
+      
     }else {
-      console.error(error);
-      await showNotifications(error.message,'danger');
+      try {
+        document.getElementById('loader').style.display = "none"
+        resetForm();
+        await showNotifications(error.message,'danger');
+        console.log('Notifications shown - 3')
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 }
-
-function updateNote(args) {
-  // Call the corresponding server method invocation function with the necessary parameters for updating a note
-  try {
-    console.log("updated args :" + args);
-    console.log("updated title : " + args.noteTitle);
-    console.log('updated content : ' + args.noteContent);
-    client.request.invoke('updateNote', {});
-  } catch (error) {
-    console.error();
-  }
-}
-
