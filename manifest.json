@@ -20,7 +20,7 @@
         "deleteNote":{
           "timeout":20
         },
-        "getAllNotes":{
+        "getLink":{
           "timeout":20
         }
       }

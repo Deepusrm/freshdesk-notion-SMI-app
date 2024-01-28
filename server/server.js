@@ -9,22 +9,30 @@ exports = {
     payloadUtils.appendBlock(body, params);
 
 
-    const pageId = await utils.returnPageIdOnCreatingNote(body);
+    const [pageId, url] = await utils.returnPageIdOnCreatingNote(body);
     console.log("note created successfully");
 
-    const results = await $request.invokeTemplate("getPageBlocks", {
-      context: { page_id: pageId }
-    })
-    console.log(pageId);
-    const blockIds = utils.returnBlockIds(results);
+    try {
+      const results = await $request.invokeTemplate("getPageBlocks", {
+        context: { page_id: pageId }
+      })
+      console.log(pageId);
+      const blockIds = utils.returnBlockIds(results);
 
-    const ticket = params.data.ticket;
-    console.log(ticket);
-    ticket.PageId = pageId;
-    ticket.Notes[noteId] = blockIds;
+      const ticket = params.data.ticket;
+      console.log(ticket);
+      ticket.PageId = pageId;
+      ticket.Notes[noteId] = blockIds;
+      ticket.url = url;
 
-    await $db.update(`ticket-${params.data.id}`, "set", { ticket }, { setIf: "exist" });
-    console.log("Note created successfully and db updated successfully");
+      await $db.update(`ticket-${params.data.id}`, "set", { ticket }, { setIf: "exist" });
+      console.log("Note created successfully and db updated successfully");
+
+    } catch (error) {
+      console.error(error);
+    }
+
+    return url;
   },
 
   appendNote: async function (params) {
@@ -50,15 +58,10 @@ exports = {
   },
 
   deleteNote: async function (id) {
-    console.log(id.ticket_id);
-    console.log(id.note_id);
-
     try {
       const ticket = await $db.get(`ticket-${id.ticket_id}`);
       const noteId = id.note_id;
-      console.log(noteId);
       const noteBlocks = ticket.ticket["Notes"][noteId];
-      console.log(noteBlocks);
       for (const block of noteBlocks) {
         await $request.invokeTemplate('deleteBlock', {
           context: { block_id: block }
@@ -73,18 +76,15 @@ exports = {
     }
   },
 
-  getAllNotes: async function (id) {
-    const ticket = await $db.get(id.ticket_id);
-    const pageId = ticket.ticket["PageId"];
-
-    const response = await $request.invokeTemplate('getPageBlocks', {
-      context: { page_id: pageId }
-    });
-
-    const results = JSON.parse(response.response);
-    return results["results"];
+  getLink: async function (id) {
+    try {
+      const ticket = await $db.get(id.ticketId);
+      const url = ticket.ticket.url;
+      return url;
+    } catch (error) {
+      console.error(error);
+    }
   }
-
 }
 
 

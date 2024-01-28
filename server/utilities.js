@@ -14,11 +14,11 @@ exports.returnPageIdOnCreatingNote = async function(bodyParam){
         context:{},
         body:JSON.stringify(bodyParam)
     })
-
     const responseJSON = JSON.parse(responseData.response);
     const pageId = responseJSON.id;
+    const url = responseJSON.url;
 
-    return pageId;
+    return [pageId,url];
 }
 
 exports.returnBlockIds = function(payload){
@@ -31,5 +31,3 @@ exports.returnBlockIds = function(payload){
 
     return blockIds;
 }
-
-

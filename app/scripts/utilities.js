@@ -16,17 +16,17 @@ async function showNotifications(message, type) {
             type: type,
             message: message
         })
-    }catch(error){
+    } catch (error) {
         console.log(error);
     }
 }
 
-function resetForm(){
+function resetForm() {
     let form = document.querySelector('fw-form');
-    let inputs = form.querySelectorAll('fw-input','fw-select','fw-textarea');
+    let inputs = form.querySelectorAll('fw-input', 'fw-select', 'fw-textarea');
 
-    inputs.forEach(input =>{
-        switch(input.tagName){
+    inputs.forEach(input => {
+        switch (input.tagName) {
             case 'fw-input':
             case 'fw-textarea':
                 input.value = '';
@@ -38,9 +38,31 @@ function resetForm(){
     })
 }
 
-function showToast(message,type){
+function showToastForDeleteNote(message, type) {
     const toast = document.getElementById('modalToast');
     toast.content = message;
     toast.type = type;
     toast.trigger();
 }
+
+function showToastForCreateNote(message, type) {
+    const toast = document.getElementById('createdToaster');
+    toast.content = message;
+    toast.type = type;
+    toast.trigger();
+}
+
+async function concatLink(url) {
+    const linkSection = document.getElementById('viewLinkSection');
+    const para = linkSection.querySelector('p');
+  
+    const firstHalf = document.createTextNode('Click ');
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.innerHTML = "here";
+    anchor.target="__blank";
+    const thirdHalf = document.createTextNode(' to view the page');
+    para.appendChild(firstHalf);
+    para.appendChild(anchor);
+    para.appendChild(thirdHalf);
+  }

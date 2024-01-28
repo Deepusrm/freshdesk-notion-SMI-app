@@ -22,7 +22,7 @@ async function deleteNote() {
         }
         try {
             document.getElementById('deleteModalLoader').style.display = "none";
-            showToast('Note deleted successfully',"success");
+            showToastForDeleteNote('Note deleted successfully',"success");
             console.log("Note deleted successfully");
         } catch (error) {
            console.error(error);
@@ -32,14 +32,14 @@ async function deleteNote() {
             try {
                 document.getElementById('deleteModalLoader').style.display = "none";
                 // await showNotifications('Note deleted successfully','success');
-                showToast('Note deleted successfully',"success");
+                showToastForDeleteNote('Note deleted successfully',"success");
                 console.log('Note deleted successfully');
             } catch (error) {
                 console.error(error);
             }
             console.log('Note deleted successfully');
         }else{
-            showToast('Proccess failed',"error");
+            showToastForDeleteNote('Proccess failed',"error");
             console.log('Process failed');
             // await showNotifications(error.message,'danger');
         }
