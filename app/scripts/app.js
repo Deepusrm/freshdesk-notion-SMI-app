@@ -128,9 +128,7 @@ async function viewlink() {
 
     const ticket = await client.data.get('ticket');
     const ticketId = `ticket-${ticket.ticket.id}`;
-    const ticketDetails = await client.db.get(ticketId);
-
-    const url = ticketDetails.ticket.url;
+    const url = await client.request.invoke('returnURL',{ticketId});
     await concatLink(url);
 
     document.getElementById('loader').style.display = "none";
@@ -144,7 +142,7 @@ async function viewlink() {
     try{
       document.getElementById('loader').style.display = "none";
       console.error(error);
-      await showNotifications(error.message,"danger");
+      await showNotifications("Failed to load the notes","danger");
     }catch(error){
       console.error(error);
     }

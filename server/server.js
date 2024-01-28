@@ -31,8 +31,6 @@ exports = {
     } catch (error) {
       console.error(error);
     }
-
-    return url;
   },
 
   appendNote: async function (params) {
@@ -76,7 +74,7 @@ exports = {
     }
   },
 
-  getLink: async function (id) {
+  returnURL: async function (id) {
     try {
       const ticket = await $db.get(id.ticketId);
       const url = ticket.ticket.url;
