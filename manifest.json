@@ -26,7 +26,7 @@
       "location": {
         "ticket_sidebar": {
           "url": "index.html",
-          "icon": "styles/images/icon.svg"
+          "icon": "styles/images/notion.svg"
         }
       },
       "events": {}
@@ -35,7 +35,7 @@
       "location": {
         "ticket_sidebar": {
           "url": "index.html",
-          "icon": "styles/images/icon.svg"
+          "icon": "styles/images/notion.svg"
         }
       },
       "events": {}
