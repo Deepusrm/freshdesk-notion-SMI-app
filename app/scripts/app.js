@@ -12,7 +12,7 @@ async function setupApp() {
   const createButton = document.getElementById('createButton');
   // const editButton = document.getElementById('editButton');
   const deleteButton = document.getElementById('deleteButton');
-  const viewButton = document.getElementById('viewButton');
+  // const viewButton = document.getElementById('viewButton');
 
   form.addEventListener('submit', handleFormSubmit);
   createButton.addEventListener('click', (e) => handleFormSubmit(e));
@@ -22,11 +22,6 @@ async function setupApp() {
     client.interface.trigger('showModal', {
       template: './deleteNoteModal.html'
     })
-  });
-
-  viewButton.addEventListener('click', async () => {
-    console.log("view button pressed");
-    await viewlink();
   });
 }
 
@@ -97,18 +92,7 @@ async function createNote(args) {
       } catch (error) {
         console.error(error);
       }
-
-    // } else if (error.message === 'Timeout error while processing the request.') {
-    //   try {
-    //     document.getElementById('loader').style.display = "none";
-    //     resetForm();
-    //     await showNotifications('Note created successfully', 'success');
-    //     console.log('Notifications shown - 2');
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-
-    // } else {
+    } else {
       try {
         document.getElementById('loader').style.display = "none"
         resetForm();
@@ -121,32 +105,5 @@ async function createNote(args) {
   }
 }
 
-async function viewlink() {
-  try {
-    document.getElementById('loader').style.display = "block";
-    document.querySelector('fw-form').style.display = "none";
 
-    const ticket = await client.data.get('ticket');
-    const ticketId = `ticket-${ticket.ticket.id}`;
-    const url = await client.request.invoke('returnURL',{ticketId});
-    await concatLink(url);
-
-    document.getElementById('loader').style.display = "none";
-    document.getElementById('viewLinkSection').style.display = "block";
-
-    document.getElementById('back').addEventListener('click',()=>{
-      document.getElementById('viewLinkSection').style.display = "none";
-      document.querySelector('fw-form').style.display = "block"
-    })
-  } catch (error) {
-    try{
-      document.getElementById('loader').style.display = "none";
-      console.error(error);
-      await showNotifications("Failed to load the notes","danger");
-    }catch(error){
-      console.error(error);
-    }
-  }
-  
-}
 

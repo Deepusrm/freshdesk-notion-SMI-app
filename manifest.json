@@ -19,9 +19,6 @@
         },
         "deleteNote":{
           "timeout":20
-        },
-        "returnURL":{
-          "timeout":20
         }
       }
     },
