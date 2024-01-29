@@ -73,16 +73,6 @@ exports = {
       console.error(error);
     }
   },
-
-  // returnURL: async function (id) {
-  //   try {
-  //     const ticket = await $db.get(id.ticketId);
-  //     const url = ticket.ticket.url;
-  //     return url;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
 }
 
 

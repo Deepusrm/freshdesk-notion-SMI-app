@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (deleteNoteButton) {
         console.log(deleteNoteButton);
         deleteNoteButton.addEventListener('click', deleteNote);
-    } else {
-        console.log("delete button not found");
     }
 });
 
@@ -22,6 +20,7 @@ async function deleteNote() {
             console.log("Note deleted successfully");  
         } catch (error) {
             console.error(error);
+            throw new Error(error);
         }
     }catch(error){
         if(error.message === 'Timeout error while processing the request.'){
@@ -35,6 +34,7 @@ async function deleteNote() {
             }
             console.log('Note deleted successfully');
         }else{
+            document.getElementById('deleteModalLoader').style.display = "none";
             showToastForDeleteNote('Proccess failed',"error");
             console.log('Process failed');
             // await showNotifications(error.message,'danger');

@@ -17,9 +17,8 @@ async function setupApp() {
   form.addEventListener('submit', handleFormSubmit);
   createButton.addEventListener('click', (e) => handleFormSubmit(e));
   // editButton.addEventListener('click', (e) => handleFormSubmit(e));
-  deleteButton.addEventListener('click', () => {
-    console.log("delete button pressed");
-    client.interface.trigger('showModal', {
+  deleteButton.addEventListener('click', async () => {
+    await client.interface.trigger('showModal', {
       template: './deleteNoteModal.html'
     })
   });
@@ -27,25 +26,12 @@ async function setupApp() {
 
 function handleFormSubmit(event) {
   event.preventDefault();
-  console.log('Function entered');
-  const noteTypeField = document.querySelector('#noteType');
-  const noteTitleField = document.querySelector('#noteTitle');
-  const noteContentField = document.querySelector('#noteContent');
-
-  const noteType = +noteTypeField.value;
-  console.log(noteType);
-  const noteTitle = noteTitleField.value;
-  const noteContent = noteContentField.value;
-  console.log(noteContent);
-
-
+  const noteType = +document.querySelector('#noteType').value;
+  const noteTitle = document.querySelector('#noteTitle').value;
+  const noteContent = document.querySelector('#noteContent').value;
+  
   let args = { noteType, noteTitle, noteContent };
-  if (event.target.id === 'createButton') {
-    createNote(args);
-
-  } else if (event.target.id === 'editButton') {
-    updateNote(args);
-  }
+  createNote(args);
 
 }
 
@@ -74,6 +60,7 @@ async function createNote(args) {
       await showNotifications('Note created successfully', 'success');
     } catch (error) {
       console.error(error);
+      throw new Error(error);
     }
   } catch (error) {
     if (error.message === "The setIf conditional request failed") {
