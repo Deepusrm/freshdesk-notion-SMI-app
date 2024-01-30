@@ -14,10 +14,8 @@ async function deleteNote() {
         const ticket = await client.data.get("ticket");
         const noteId = document.getElementById('noteId').value;
         try {
-            await client.request.invoke('deleteNote', { ticket_id: `${ticket.ticket.id}`, note_id: noteId });  
+            await client.request.invoke('deleteNote', { ticket_id: `${ticket.ticket.id}`, note_id: noteId });   
             document.getElementById('deleteModalLoader').style.display = "none";
-            showToastForDeleteNote('Note deleted successfully',"success");
-            console.log("Note deleted successfully");  
         } catch (error) {
             console.error(error);
             throw error;
@@ -26,12 +24,12 @@ async function deleteNote() {
         if(error.message === 'Timeout error while processing the request.'){
             try {
                 document.getElementById('deleteModalLoader').style.display = "none";
-                showToastForDeleteNote('Note deleted successfully',"success");
-                console.log('Note deleted successfully');
+                await showToastForDeleteNote(error.message,"error");
+                console.log("Error inside the try catch : "+error.message);
             } catch (error) {
                 console.error(error);
             }
-            console.log('Note deleted successfully');
+            console.log("Error outside the try catch : "+error.message);
         }else{
             document.getElementById('deleteModalLoader').style.display = "none";
             // await showNotifications(error.message,'danger');

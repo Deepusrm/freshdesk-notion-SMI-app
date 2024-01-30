@@ -28,7 +28,7 @@ function resetForm() {
     })
 }
 
-function showToastForDeleteNote(message, type) {
+async function showToastForDeleteNote(message, type) {
     const toast = document.getElementById('modalToast');
     toast.content = message;
     toast.type = type;
