@@ -2,12 +2,25 @@ var client;
 
 init();
 
+let ticketData;
+let ticket_id;
+
 async function init() {
   client = await app.initialized();
-  client.events.on('app.activated', setupApp);
+  client.events.on('app.activated', async()=>{
+    try {
+      ticketData = await client.data.get('ticket');
+      ticket_id = ticketData.ticket.id;
+      console.log('Ticket id is : '+ticket_id);
+      setupApp();
+    } catch (error) {
+      console.error(error);
+    }
+  });
 }
 
 async function setupApp() {
+  console.log('Ticket id is : '+ticket_id);
   const form = document.querySelector('fw-form');
   const createButton = document.getElementById('createButton');
   // const editButton = document.getElementById('editButton');
@@ -38,9 +51,9 @@ function handleFormSubmit(event) {
 async function createNote(args) {
   // Call the corresponding server method invocation function with the necessary parameters for creating a note
   document.getElementById('loader').style.display = "block"
-  const ticketDetails = await client.data.get("ticket");
-  const id = ticketDetails.ticket["id"];
-  console.log(id);
+  // const ticketDetails = await client.data.get("ticket");
+  // const id = ticketDetails.ticket["id"];
+  // console.log(id);
   let ticket = {
     "PageId": "",
     "Notes": {},
@@ -48,7 +61,7 @@ async function createNote(args) {
   }
   let params = { ...args, id, ticket };
   try {
-    await client.db.set(`ticket-${id}`, { ticket }, { setIf: "not_exist" });
+    await client.db.set(`ticket-${ticket_id}`, { ticket }, { setIf: "not_exist" });
     try {
       await client.request.invoke('createNote', { data: params });
     } catch (error) {
