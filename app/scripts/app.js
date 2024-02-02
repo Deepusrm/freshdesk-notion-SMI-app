@@ -59,7 +59,7 @@ async function createNote(args) {
     "Notes": {},
     "url": ""
   }
-  let params = { ...args, id, ticket };
+  let params = { ...args, ticket_id, ticket };
   try {
     await client.db.set(`ticket-${ticket_id}`, { ticket }, { setIf: "not_exist" });
     try {

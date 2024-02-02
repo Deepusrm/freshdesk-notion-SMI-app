@@ -2,15 +2,20 @@ const payloadUtils = require('./payload_utilities');
 const utils = require('./utilities');
 exports = {
   createNote: async function (params) {
-    const parentBlock = payloadUtils.parentBlock(params.data.id);
+    const parentBlock = payloadUtils.parentBlock(params.data.ticket_id);
     const [childBlock, noteId] = payloadUtils.childBlock(params.data.noteTitle);
     const body = { ...parentBlock, ...childBlock };
 
     payloadUtils.appendBlock(body, params);
 
-
-    const [pageId, url] = await utils.returnPageIdOnCreatingNote(body);
-    console.log("note created successfully");
+    let pageId = null;
+    let url = null;
+    try {
+      [pageId,url]= await utils.returnPageIdOnCreatingNote(body);
+      console.log("note created successfully"); 
+    } catch (error) {
+      console.error(error);
+    }
 
     try {
       const results = await $request.invokeTemplate("getPageBlocks", {
@@ -25,7 +30,7 @@ exports = {
       ticket.Notes[noteId] = blockIds;
       ticket.url = url;
 
-      await $db.update(`ticket-${params.data.id}`, "set", { ticket }, { setIf: "exist" });
+      await $db.update(`ticket-${params.data.ticket_id}`, "set", { ticket }, { setIf: "exist" });
       console.log("Note created successfully and db updated successfully");
 
     } catch (error) {
@@ -34,7 +39,7 @@ exports = {
   },
 
   appendNote: async function (params) {
-    const pageId = await $db.get(`ticket-${params.data.id}`);
+    const pageId = await $db.get(`ticket-${params.data.ticket_id}`);
     const [childBlock, noteId] = payloadUtils.childBlock(params.data.noteTitle);
 
     payloadUtils.appendBlock(childBlock, params);
@@ -47,7 +52,7 @@ exports = {
       const blockIds = utils.returnBlockIds(results);
 
       let note = `ticket.Notes[${noteId}]`
-      await $db.update(`ticket-${params.data.id}`, "set", { [note]: blockIds }, { setIf: "exist" });
+      await $db.update(`ticket-${params.data.ticket_id}`, "set", { [note]: blockIds }, { setIf: "exist" });
       console.log("Note added successfully and db updated successfully");
     } catch (error) {
       console.error(error);

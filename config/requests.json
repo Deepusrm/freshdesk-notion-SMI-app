@@ -5,7 +5,7 @@
             "host": "api.notion.com",
             "path": "/v1/pages",
             "headers": {
-                "Authorization": "Bearer <%=access_token%>",
+                "Authorization": "Bearer <%=iparam.api_key%>",
                 "Content-Type": "application/json",
                 "Notion-version": "2022-06-28"
             }
@@ -17,7 +17,7 @@
             "host": "api.notion.com",
             "path": "/v1/blocks/<%=context.page_id%>/children",
             "headers": {
-                "Authorization": "Bearer <%=access_token%>",
+                "Authorization": "Bearer <%=iparam.api_key%>",
                 "Content-Type": "application/json",
                 "Notion-version": "2022-06-28"
             }
@@ -29,7 +29,7 @@
             "host": "api.notion.com",
             "path": "/v1/blocks/<%=context.page_id%>/children",
             "headers": {
-                "Authorization": "Bearer <%=access_token%>",
+                "Authorization": "Bearer <%=iparam.api_key%>",
                 "Content-Type": "application/json",
                 "Notion-version": "2022-06-28"
             }
@@ -41,7 +41,7 @@
             "host": "api.notion.com",
             "path": "/v1/blocks/<%=context.block_id%>",
             "headers": {
-                "Authorization": "Bearer <%=access_token%>",
+                "Authorization": "Bearer <%=iparam.api_key%>",
                 "Content-Type": "application/json",
                 "Notion-version": "2022-06-28"
             }
@@ -53,7 +53,7 @@
             "host": "api.notion.com",
             "path": "/v1/blocks/<%=context.block_id%>",
             "headers": {
-                "Authorization": "Bearer <%=access_token%>",
+                "Authorization": "Bearer <%=iparam.api_key%>",
                 "Content-Type": "application/json",
                 "Notion-version": "2022-06-28"
             }
@@ -65,7 +65,7 @@
             "host": "api.notion.com",
             "path": "/v1/blocks/<%=context.block_id%>",
             "headers": {
-                "Authorization": "Bearer <%=access_token%>",
+                "Authorization": "Bearer <%=iparam.api_key%>",
                 "Content-Type": "application/json",
                 "Notion-version": "2022-06-28"
             }
