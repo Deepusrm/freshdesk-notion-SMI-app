@@ -7,11 +7,11 @@ let ticket_id;
 
 async function init() {
   client = await app.initialized();
-  client.events.on('app.activated', async()=>{
+  client.events.on('app.activated', async () => {
     try {
       ticketData = await client.data.get('ticket');
       ticket_id = ticketData.ticket.id;
-      console.log('Ticket id is : '+ticket_id);
+      console.log('Ticket id is : ' + ticket_id);
       setupApp();
     } catch (error) {
       console.error(error);
@@ -20,7 +20,7 @@ async function init() {
 }
 
 async function setupApp() {
-  console.log('Ticket id is : '+ticket_id);
+  console.log('Ticket id is : ' + ticket_id);
   const form = document.querySelector('fw-form');
   const createButton = document.getElementById('createButton');
   // const editButton = document.getElementById('editButton');
@@ -42,7 +42,7 @@ function handleFormSubmit(event) {
   const noteType = +document.querySelector('#noteType').value;
   const noteTitle = document.querySelector('#noteTitle').value;
   const noteContent = document.querySelector('#noteContent').value;
-  
+
   let args = { noteType, noteTitle, noteContent };
   createNote(args);
 
@@ -63,41 +63,34 @@ async function createNote(args) {
   try {
     await client.db.set(`ticket-${ticket_id}`, { ticket }, { setIf: "not_exist" });
     try {
-      await client.request.invoke('createNote', { data: params });
-    } catch (error) {
-      console.error(error);
-    }
-    try {
-      document.getElementById('loader').style.display = "none"
+      const result = await client.request.invoke('createNote', { data: params });
+      document.getElementById('loader').style.display = "none";
       resetForm();
-      await showNotifications('Note created successfully', 'success');
+      if(result.response === "Note created successfully"){
+        await showNotifications(result.response, 'success');
+      }else{
+        await showNotifications(result.response,'danger');
+      }
     } catch (error) {
       console.error(error);
-      throw new Error(error);
     }
+    // try {
+    // } catch (error) {
+    //   console.error(error);
+    //   // throw new Error(error);
+    // }
   } catch (error) {
     if (error.message === "The setIf conditional request failed") {
       try {
-        await client.request.invoke('appendNote', { data: params });
-        console.log('Note added successfully');
-      } catch (error) {
-        console.error(error);
-      }
-
-      try {
+        const result = await client.request.invoke('appendNote', { data: params });
         document.getElementById('loader').style.display = "none";
         resetForm();
-        await showNotifications('Note added successfully', 'success');
-        console.log('Notifications shown - 1');
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      try {
-        document.getElementById('loader').style.display = "none"
-        resetForm();
-        await showNotifications(error.message, 'danger');
-        console.log('Notifications shown - 3')
+        if(result.response === "Note added successfully"){
+          await showNotifications(result.response, 'success');
+        }else{
+          await showNotifications(result.response,'danger');
+        }
+        
       } catch (error) {
         console.error(error);
       }

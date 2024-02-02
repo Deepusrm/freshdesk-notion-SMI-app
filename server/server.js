@@ -32,9 +32,10 @@ exports = {
 
       await $db.update(`ticket-${params.data.ticket_id}`, "set", { ticket }, { setIf: "exist" });
       console.log("Note created successfully and db updated successfully");
-
+      renderData(null,"Note created successfully");
     } catch (error) {
       console.error(error);
+      renderData(error.message,null);
     }
   },
 
@@ -54,8 +55,11 @@ exports = {
       let note = `ticket.Notes[${noteId}]`
       await $db.update(`ticket-${params.data.ticket_id}`, "set", { [note]: blockIds }, { setIf: "exist" });
       console.log("Note added successfully and db updated successfully");
+      renderData(null,"Note added successfully");
     } catch (error) {
       console.error(error);
+      const customError = new Error(error.message);
+      renderData(customError,null);
     }
 
   },
@@ -65,6 +69,12 @@ exports = {
       const ticket = await $db.get(`ticket-${id.ticket_id}`);
       const noteId = id.note_id;
       const noteBlocks = ticket.ticket["Notes"][noteId];
+
+      if (!Array.isArray(noteBlocks)) {
+        renderData(null, "Note doesn't exist");
+        return;
+      }
+
       for (const block of noteBlocks) {
         await $request.invokeTemplate('deleteBlock', {
           context: { block_id: block }
@@ -74,8 +84,11 @@ exports = {
       const notePath = "ticket.Notes." + id.note_id;
       await $db.update(`ticket-${id.ticket_id}`, "remove", [notePath], { setIf: "exist" });
       console.log("Note removed successfully from the db");
+      renderData(null,'Note deleted successfully');
     } catch (error) {
       console.error(error);
+      const customError = new Error(error.message,null);
+      renderData(customError,null);
     }
   },
 }
